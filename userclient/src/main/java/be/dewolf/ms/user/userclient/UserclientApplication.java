@@ -18,54 +18,12 @@ import org.springframework.web.client.RestTemplate;
 import java.util.List;
 
 @SpringBootApplication
-@RestController
 @EnableDiscoveryClient
-@EnableFeignClients
-//@EnableDiscoveryClient
-//@RibbonClient(name = "say-hello", configuration = SayHelloConfiguration.class)
 public class UserclientApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(UserclientApplication.class, args);
     }
 
-    @LoadBalanced
-    @Bean
-    RestTemplate restTemplate() {
-        return new RestTemplate();
-    }
 
-    @Autowired
-    RestTemplate restTemplate;
-
-    @Autowired
-    private ReportingServiceClient reportingServiceClient;
-
-    @Autowired
-    private DiscoveryClient discoveryClient;
-
-    @RequestMapping("/hi")
-    public String hi() {
-        return reportingServiceClient.runningPort();
-    }
-
-    @RequestMapping("/hi-manual")
-    public String runningServerManually() {
-        final List<ServiceInstance> instances = this.discoveryClient.getInstances("reportingservice");
-        for(final ServiceInstance instance : instances){
-            System.out.println("Instance: " + instance.getHost().toString());
-            System.out.println("Port: " + instance.getPort());
-            System.out.println("URI: " + instance.getUri().toString());
-        }
-        return this.restTemplate.getForObject("http://reportingservice/runningport", String.class);
-//        List<ServiceInstance> reportingservice = this.discoveryClient.getInstances("reportingservice");
-
-    }
-
-}
-
-@FeignClient("reportingservice")
-interface ReportingServiceClient {
-    @RequestMapping("/runningport")
-    String runningPort();
 }
