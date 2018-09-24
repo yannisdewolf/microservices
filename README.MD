@@ -19,4 +19,4 @@
   # How it works
   `http://localhost:8282/hi-manual`
   
-  calls load-balanced the Reporting Services throught Eureka
+  calls load-balanced the Reporting Services with Ribbon throught Eureka
